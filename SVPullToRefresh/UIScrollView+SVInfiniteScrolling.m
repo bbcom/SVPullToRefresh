@@ -153,9 +153,7 @@ UIEdgeInsets scrollViewOriginalContentInsets;
 }
 
 - (void)layoutSubviews {
-    dispatch_async(dispatch_get_main_queue(), ^{
         self.activityIndicatorView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
-    });
 }
 
 #pragma mark - Scroll View
