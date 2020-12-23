@@ -636,27 +636,28 @@ static char UIScrollViewPullToRefreshView;
     
     SVPullToRefreshState previousState = _state;
     _state = newState;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self setNeedsLayout];
+        [self layoutIfNeeded];
     
-    [self setNeedsLayout];
-    [self layoutIfNeeded];
-    
-    switch (newState) {
-        case SVPullToRefreshStateAll:
-        case SVPullToRefreshStateStopped:
-            [self resetScrollViewContentInset];
-            break;
+        switch (newState) {
+            case SVPullToRefreshStateAll:
+            case SVPullToRefreshStateStopped:
+                [self resetScrollViewContentInset];
+                break;
             
-        case SVPullToRefreshStateTriggered:
-            break;
+            case SVPullToRefreshStateTriggered:
+                break;
             
-        case SVPullToRefreshStateLoading:
-            [self setScrollViewContentInsetForLoading];
+            case SVPullToRefreshStateLoading:
+                [self setScrollViewContentInsetForLoading];
             
-            if(previousState == SVPullToRefreshStateTriggered && pullToRefreshActionHandler)
-                pullToRefreshActionHandler();
+                if(previousState == SVPullToRefreshStateTriggered && pullToRefreshActionHandler)
+                    pullToRefreshActionHandler();
             
-            break;
-    }
+                break;
+        }
+    });
 }
 
 - (void)rotateArrow:(float)degrees hide:(BOOL)hide {
